@@ -36,6 +36,14 @@ class BarangController extends Controller
             'kondisi_barang' => 'required',
         ]);
 
+
+        // date now
+        $now = date('Y-m-d');
+
+        if ($request->tanggal_masuk < $now) {
+            return redirect()->route('admin.barang.create')->with('error', 'Tanggal masuk tidak boleh kurang dari hari ini');
+        }
+
         Barang::create([
             'jenis_barang' => $request->jenis_barang,
             'kategori' => $request->kategori,
