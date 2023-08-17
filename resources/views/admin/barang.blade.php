@@ -43,6 +43,31 @@
           </svg>
         </button>
       </div>
+    @elseif ($errors->any())
+      <div id="alert-4" class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert">
+        <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 7a1 1 0 112 0v4a1 1 0 11-2 0V7zm1 8a1 1 0 100 2 1 1 0 000-2z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Error</span>
+        @foreach ($errors->all() as $error)
+          {{ $error }}
+        @endforeach
+        <button type="button"
+          class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+          data-dismiss-target="#alert-4" aria-label="Close">
+          <span class="sr-only">Close</span>
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 11-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
     @endif
 
     <div class="relative overflow-x-auto">
@@ -101,26 +126,26 @@
                 {{ $b->kondisi_barang }}
               </td>
               <td class="px-6 py-4 flex justify-center gap-3">
-                <button data-modal-target="{{ "edit-modal-".$b->id }}" data-modal-toggle="{{ "edit-modal-".$b->id }}"
-                  class="fa-regular fa-pen-to-square" type="button">
+                <button data-modal-target="{{ 'edit-modal-' . $b->id }}"
+                  data-modal-toggle="{{ 'edit-modal-' . $b->id }}" class="fa-regular fa-pen-to-square" type="button">
                 </button>
                 <form action="{{ route('admin.barang.destroy', ['id' => $b->id]) }}" method="post">
-                    @method('DELETE')
-                    @csrf
-                    <button class="fa-regular fa-trash-can">
-                    </button>
+                  @method('DELETE')
+                  @csrf
+                  <button class="fa-regular fa-trash-can">
+                  </button>
                 </form>
               </td>
             </tr>
             <!-- Main modal -->
-            <div id="{{ "edit-modal-".$b->id }}" tabindex="-1" aria-hidden="true"
+            <div id="{{ 'edit-modal-' . $b->id }}" tabindex="-1" aria-hidden="true"
               class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
               <div class="relative w-full max-w-md max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                   <button type="button"
                     class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                    data-modal-hide="{{ "edit-modal-".$b->id }}">
+                    data-modal-hide="{{ 'edit-modal-' . $b->id }}">
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd"
@@ -131,9 +156,10 @@
                   </button>
                   <div class="px-6 py-6 lg:px-8">
                     <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit data barang</h3>
-                    <form class="space-y-6" action="{{ route('admin.barang.update', ['id' => $b->id]) }}" method="post">
-                        @csrf
-                        @method('PUT')
+                    <form class="space-y-6" action="{{ route('admin.barang.update', ['id' => $b->id]) }}"
+                      method="post">
+                      @csrf
+                      @method('PUT')
                       <div class="my-3">
                         <label for="jenis_barang"
                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis barang</label>
@@ -157,33 +183,34 @@
                       </div>
                       <div class="my-3">
                         <label for="merek"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Merek</label>
-                      <input type="merek" name="merek" id="merek"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        value="{{ $b->merek }}" required>
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Merek</label>
+                        <input type="merek" name="merek" id="merek"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          value="{{ $b->merek }}" required>
                       </div>
                       <div class="my-3">
                         <label for="jumlah_barang"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Barang</label>
-                      <input type="number" name="jumlah_barang" id="jumlah_barang"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        value="{{ $b->jumlah_barang }}" required>
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Barang</label>
+                        <input type="number" name="jumlah_barang" id="jumlah_barang"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          value="{{ $b->jumlah_barang }}" required>
                       </div>
                       <div class="my-3">
                         <label for="tanggal_masuk"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Masuk</label>
-                      <input type="date" name="tanggal_masuk" id="tanggal_masuk"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        value="{{ $b->tanggal_masuk }}" required>
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Masuk</label>
+                        <input type="date" name="tanggal_masuk" id="tanggal_masuk"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          value="{{ $b->tanggal_masuk }}" required>
                       </div>
                       <div class="my-3">
                         <label for="kondisi_barang"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kondisi Barang</label>
-                      <input type="text" name="kondisi_barang" id="kondisi_barang"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        value="{{ $b->kondisi_barang }}" required>
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kondisi Barang</label>
+                        <input type="text" name="kondisi_barang" id="kondisi_barang"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                          value="{{ $b->kondisi_barang }}" required>
                       </div>
-                      <button type="submit" class="py-2 px-4 my-2 rounded-lg bg-black hover:bg-white text-white hover:text-black transition-all duration-200 hover:border border-black font-semibold">
+                      <button type="submit"
+                        class="py-2 px-4 my-2 rounded-lg bg-black hover:bg-white text-white hover:text-black transition-all duration-200 hover:border border-black font-semibold">
                         Submit
                       </button>
 

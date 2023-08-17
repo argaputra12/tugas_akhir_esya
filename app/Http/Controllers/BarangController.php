@@ -28,7 +28,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_barang' => 'required',
+            'jenis_barang' => 'required|unique:barangs',
             'kategori' => 'required',
             'merek' => 'required',
             'jumlah_barang' => 'required',
@@ -36,12 +36,11 @@ class BarangController extends Controller
             'kondisi_barang' => 'required',
         ]);
 
-
         // date now
         $now = date('Y-m-d');
 
         if ($request->tanggal_masuk > $now) {
-            return redirect()->route('admin.barang.create')->with('error', 'Tanggal masuk tidak boleh lebih dari hari ini');
+            return redirect()->route('admin.barang.create')->withErrors('Tanggal masuk tidak boleh lebih dari hari ini');
         }
 
         Barang::create([
@@ -71,9 +70,9 @@ class BarangController extends Controller
 
         if($request->tanggal_masuk > $now)
         {
-            return redirect()->route('admin.barang.edit', $id)->with('error', 'Tanggal masuk tidak boleh lebih dari hari ini');
+            return redirect()->route('admin.barang.index')->withErrors('Tanggal masuk tidak boleh lebih dari hari ini');
         }
-        
+
         $barang = Barang::find($id);
 
         $barang->update([
